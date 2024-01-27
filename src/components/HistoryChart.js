@@ -1,44 +1,40 @@
 import React, { useEffect, useState } from 'react';
 import { Line } from "react-chartjs-2"
 import {Chart as ChartJS} from "chart.js/auto";
+import Loader from './Loader';
 import chartConfig from "../chartConfig/chartConfig";
 import 'chartjs-adapter-date-fns';
 
 
-function HistoryChart({ data }) {
+function HistoryChart({ setDay, data, error }) {
     const { config } = chartConfig();
-    const { day, week, twoweeks, month, year, detail } = data;
-    const [timeFormat, setTimeFormat] = useState("24h");
+    const { time, detail } = data;
     const [cryptoData, setCryptoData] = useState({});
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+    const [timeUnit, setTimeUnit] = useState("hour");
 
-    const theRightTimeFormat = () => {
-        switch (timeFormat) {
-            case "24h":
-                return day;
-            case "7d":
-                return week;
-            case "14d":
-                return twoweeks;
-            case "30d":
-                return month;
-            case "1y":
-                return year;
-            default:
-                return day;
+    const timeUnitForChart = () => {
+        if (timeUnit === "hour") {
+            config.scales.x.time.unit = timeUnit;
+        } else if (timeUnit === "day") {
+            config.scales.x.time.unit = timeUnit;
+        } else if (timeUnit === "week") {
+            config.scales.x.time.unit = timeUnit;
+        } else {
+            config.scales.x.time.unit = timeUnit;
         }
-    };
-
+    }
+    
     useEffect(() => {
-        if (day) {
-            theRightTimeFormat();
+        if (Object.keys(data).length > 0) {
+            timeUnitForChart();
             const fetchData = () => {
                 return setCryptoData({
-                    labels: theRightTimeFormat().map((data) => data.t),
+                    labels: time.map((data) => data.t),
                     datasets: [
                         {
                             label: `${detail.name} price`,
-                            data: theRightTimeFormat().map((data) => data.y),
+                            data: time.map((data) => data.y),
                             backgroundColor: "rgba(30, 30, 30, 0.5)",
                             borderColor: "rgb(75, 192, 192)",
                             pointRadius: 0,
@@ -51,19 +47,24 @@ function HistoryChart({ data }) {
             fetchData();
             setIsLoading(false);
         }
-    }, [timeFormat, detail]);
+    }, [timeUnit, time, detail]);
 
     const renderPrice = () => {
-        if (detail) {
+         if (Object.keys(data).length > 0) {
             return (
                 <div className='render-price'>
                     <p>
-                        Current price: <span className='render-curr-price'>€ {detail.current_price.toFixed(2)}</span>
+                        Current price: <span className='render-curr-price'>€ {
+                            detail.current_price !== null ? detail.current_price.toFixed(2) : "ERROR"
+                        }</span>
                     </p>
                     <p>
                         Price change in 24h: <span className={
-                        detail.price_change_24h < 0 ? "red" : "green"
-                    }>{detail.price_change_percentage_24h.toFixed(2)}%</span>
+                            detail.price_change_24h !== null ? (
+                                detail.price_change_24h < 0 ? "red" : "green"
+                            ) : "red"                            
+                    }>{detail.price_change_percentage_24h !== null ? 
+                        detail.price_change_percentage_24h.toFixed(2) : "ERROR"}%</span>
                     </p>
                 </div>
             )
@@ -72,27 +73,26 @@ function HistoryChart({ data }) {
 
   return (
     <div className='graph'>
-        <div>
-            {renderPrice()}
-        </div>
-       {!isLoading && <Line data={cryptoData} options={{...config}} />}
+       {error && <Loader />}
+        {detail && <div>{renderPrice()}</div>}
+        {!isLoading && <Line data={cryptoData} options={{...config}} />}
         <div className='btn'>
-            <button onClick={() => {setTimeFormat("24h")}}>
+            <button onClick={() => {setTimeUnit("hour"); setDay(1)}}>
                 24h
             </button>
-            <button onClick={() => {setTimeFormat("7d")}}>
+            <button onClick={() => {setTimeUnit("day"); setDay(7)}}>
                 7 days
             </button>
-            <button onClick={() => setTimeFormat("14d")}>
+            <button onClick={() => {setTimeUnit("day"); setDay(14)}}>
                 14 days
             </button>
-            <button onClick={() => setTimeFormat("30d")}>
+            <button onClick={() => {setTimeUnit("week"); setDay(30)}}>
                 30 days
             </button>
-            <button onClick={() => setTimeFormat("1y")}>
+            <button onClick={() => {setTimeUnit("month"); setDay(365)}}>
                 1 year
             </button>
-        </div>
+        </div>        
     </div>
   );
 };
