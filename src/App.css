@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&family=Roboto:wght@400;500&display=swap');
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+:root {
+  --bgColor: #000;
+  --headerBgColor: #ff7b00;
+  --textColor: #fff;
+  --coinCardBgColor: #1C1B1B;
+  --red: #db0b0b;
+  --green: #29a751;
+  --loaderColor: rgb(75, 192, 192);
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  background-color: var(--bgColor);
+  font-family: "Roboto", Helvetica, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.App {
+  width: 100vw;
+  margin: 0 auto;
+}
+
+.cryptoHeader {
+  width: 100vw;
+  height: 30%;
+  background-color: var(--headerBgColor);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem 0;
+}
+
+.cryptoHeader h1, .cryptoHeader h2, .cryptoHeader h5 {
+  margin: 1%;
+  text-align: center;
+  font-family: 'Fredoka', sans-serif;
+}
+
+.cryptoHeader input {
+  width: 45vw;
+  height: 4vh;
+  border: none;
+  border-radius: 0.3125rem;
+  background-color: var(--textColor);
+  font-size: 1.10rem;
+  font-weight: bold;
+  color: var(--bgColor);
+  text-align: center;
+  margin-top: 2%;
+}
+
+.cryptoHeader input:focus {
+  border: 0.1rem solid var(--bgColor);
+  outline: none;
+}
+
+.cryptoHeader input:focus::placeholder {
+  opacity: 0;
+}
+
+.cryptoDisplay {
+  margin-top: 1.25rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.coin {
+  width: 80vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: var(--coinCardBgColor);
+  font-size: 0.9rem;
+  color: var(--textColor);
+  border-radius: 0.7rem;
+  margin: 1.25rem;
+  text-align: center;
+}
+
+.coin img {
+  height: 5rem;
+}
+
+.price {
+  color: var(--headerBgColor);
+}
+
+.link {
+  margin-top: 1rem;
+  text-decoration: none;
+  color: var(--textColor);
+}
+
+.btn-more {
+  width: 8rem;
+  height: 2rem;
+  font-family: 'Fredoka', sans-serif;
+  font-size: 1.1rem;
+  color: var(--bgColor);
+  background-color: var(--headerBgColor);
+  border-radius: 2rem;
+  cursor: pointer;
+  border: none;
+
+}
+
+.btn-more:hover {
+  border: 0.1rem solid var(--textColor);
+}
+
+.red {
+  color: var(--red);
+}
+
+.green {
+  color: var(--green);
+}
+
+.back-to-main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: var(--bgColor);
+  font-family: 'Fredoka', sans-serif;
+  font-size: .85rem;
+}
+
+.back-to-main p {
+  margin-top: 0;
+}
+
+.back-to-main:hover {
+  color: var(--textColor);
+}
+
+.fa-solid {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+
+.graph {
+  width: 90vw;
+  height: auto;
+  margin: 3%;
+  color: var(--textColor);
+}
+
+.render-price {
+  color: var(--headerBgColor);
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+}
+
+.render-curr-price {
+  color: var(--textColor);
+}
+
+.btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2%;
+}
+
+.btn button {
+  width: 4rem;
+  height: 1.6rem;
+  color: var(--headerBgColor);
+  background-color: var(--coinCardBgColor);
+  border-radius: 2rem;
+  cursor: pointer;
+  border: none;
+}
+
+.btn button:hover, .btn button:focus {
+  scale: 1.1;
+  border: 1px solid var(--headerBgColor);
+}
+
+.data {
+  width: 90vw;
+  height: auto;
+  display: grid;
+  grid-gap: 0.1rem;
+  grid-template-columns: repeat(1, 1fr);
+  margin-inline: auto;
+  color: var(--textColor);
+  margin-top: 10%;
+  margin-bottom: 3%;
+}
+
+.data-span {
+  display: flex;
+  justify-content: space-between;
+}
+
+.data-title {
+  color: var(--headerBgColor);
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+
+.wrapper span {
+  display: inline-block;
+  width: 4rem;
+  height: 4rem;
+  border: 5px solid var(--coinCardBgColor);
+  border-bottom-color: var(--loaderColor);
+  border-radius: 50%;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media (min-width: 800px) {
+  body {
+    overflow-x: hidden;
+  }
+  
+  .cryptoHeader input {
+    height: 3vh;
+  }
+
+  .cryptoDisplay {
+    width: 90vw;
+    display: grid;
+    grid-gap: 0.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    margin-inline: auto;
+    user-select: none;
+    overflow: hidden;   
+  }
+
+  .coin {
+    width: 35vw;
+    height: auto;
+  }
+
+  .btn {
+    justify-content: flex-start;
+    gap: 1rem;
+  }
+
+  .data {
+    width: 60vw;
+  }
+}
+
+@media (min-width: 1100px) {
+  .cryptoHeader input {
+    height: 5vh;
+    margin: 0;
+  }
+
+  .cryptoDisplay {
+    width: 90vw;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .coin {
+    width: 20vw;
+    font-size: 1rem;
+  }
+
+  .data {
+    width: 40vw;
+    margin-top: 5%;
+    margin-left: 5%;
+  }
+}
