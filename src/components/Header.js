@@ -13,6 +13,7 @@ function Header({ setSearchWord, mainPage }) {
     <div className='cryptoHeader'>
         <h1>CRYPTO TRACKER</h1>
         <h2>Cryptocurrency Prices and Charts!</h2>
+        <h5>Powered by <Link to={'//www.coingecko.com/'} target='_blank'>CoinGecko</Link></h5>
         {mainPage ? (<input type="text" placeholder='Search a coin' 
           onChange={handleChange} />) : (
             <Link to={`/`} className='link'>
