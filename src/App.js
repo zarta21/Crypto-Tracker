@@ -8,6 +8,7 @@ import DetailPage from './pages/DetailPage';
 function App() {
   const [searchWord, setSearchWord] = useState("");
   const [mainPage, setMainPage] = useState(true);
+  const [day, setDay] = useState(1);
 
   useEffect(() => {
     setSearchWord("");
@@ -19,7 +20,7 @@ function App() {
         <Header setSearchWord={setSearchWord} mainPage={mainPage} />     
           <Routes>
             <Route index element={<Coin searchWord={searchWord} setSearchWord={setSearchWord} setMainPage={setMainPage} />} />
-              <Route path='/coins/:id' element={<DetailPage setMainPage={setMainPage} />} />
+              <Route path='/coins/:id' element={<DetailPage day={day} setDay={setDay} setMainPage={setMainPage} />} />
           </Routes>
         </BrowserRouter>
     </div>
