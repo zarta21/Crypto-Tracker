@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import Loader from './Loader';
 
 function Coin({ searchWord, setMainPage }) {
 
     const [listOfCoins, setListOfCoins] = useState([]);
+    const [err, setErr] = useState(false);
 
     useEffect(() => {
         axios.get("https://api.coingecko.com/api/v3/coins/markets?vs_currency=eur&order=market_cap_desc&per_page=150&page=1&sparkline=false&price_change_percentage=1h%2C24h%2C7d")
@@ -12,6 +14,7 @@ function Coin({ searchWord, setMainPage }) {
             setListOfCoins(res.data);
             setMainPage(true);
         })
+        .catch(error => {setErr(true); alert(`${error.message}\nTry again later`)})
     }, [])
 
     const filteredCoins = listOfCoins.filter((coin) => {
@@ -20,6 +23,7 @@ function Coin({ searchWord, setMainPage }) {
 
   return (
     <div className='cryptoDisplay'>
+      {err && <Loader />}
         {filteredCoins.map((coin) => {
             return (
                 <div className='coin' key={coin.id}>
