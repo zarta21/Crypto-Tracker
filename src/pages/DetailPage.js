@@ -4,10 +4,11 @@ import { useParams } from 'react-router-dom';
 import HistoryChart from '../components/HistoryChart';
 import CoinData from '../components/CoinData';
 
-function DetailPage({ setMainPage }) {
+function DetailPage({ day, setDay, setMainPage }) {
     const { id } = useParams();
     const [coinData, setCoinData] = useState({});
-
+    const [err, setErr] = useState(false);
+    
     const formatData = (data) => {
         return data.map((el) => {
             return {
@@ -19,60 +20,38 @@ function DetailPage({ setMainPage }) {
 
     useEffect(() => {
         const fetchData = async () => {
-            const [day, week, twoweeks, month, year, detail] = await Promise.all([
-                axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
-                    params: {
-                        vs_currency: "eur",
-                        days: "1",
-                    },
-                }),
-                axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
-                    params: {
-                        vs_currency: "eur",
-                        days: "7",
-                    },
-                }),
-                axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
-                    params: {
-                        vs_currency: "eur",
-                        days: "14",
-                    },
-                }),
-                axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
-                    params: {
-                        vs_currency: "eur",
-                        days: "30",
-                    },
-                }),
-                axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
-                    params: {
-                        vs_currency: "eur",
-                        days: "365",
-                    },
-                }),
-                axios.get(`https://api.coingecko.com/api/v3/coins/markets/`, {
-                    params: {
-                        vs_currency: "eur",
-                        ids: id,
-                    },
-                }),
-            ]);
-            setCoinData({
-                day: formatData(day.data.prices),
-                week: formatData(week.data.prices),
-                twoweeks: formatData(twoweeks.data.prices),
-                month: formatData(month.data.prices),
-                year: formatData(year.data.prices),
-                detail: detail.data[0],
-            });
-        };
-        fetchData();
+            try {
+                const [res, detail] = await Promise.all([
+                    axios.get(`https://api.coingecko.com/api/v3/coins/${id}/market_chart/`, {
+                        params: {
+                            vs_currency: "eur",
+                            days: day,
+                        }
+                    }),
+                    axios.get(`https://api.coingecko.com/api/v3/coins/markets/`, {
+                        params: {
+                            vs_currency: "eur",
+                            ids: id,
+                        },
+                    }),
+                ])
+                setCoinData({
+                    time: formatData(res.data.prices),
+                    detail: detail.data[0]
+                })
+            } catch (error) {
+                setErr(true)
+                alert(`Ups, something wrong happend...\n${error.message}`)
+            }
+        }
+
+        fetchData()
         setMainPage(false);
-    }, []);
+    }, [id, setMainPage, day]);
     
   return (
     <div>
-        <HistoryChart data={coinData} />
+        <HistoryChart data={coinData} setDay={setDay} error={err}/>
         <CoinData data={coinData.detail} />
     </div>
   )
