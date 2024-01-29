@@ -2,6 +2,13 @@
 
 This web application allows you to track the latest prices and details of various cryptocurrencies effortlessly. Leveraging the CoinGecko API for real-time cryptocurrency data, React for the front end, and React Router for seamless navigation, this project aims to provide a user-friendly and informative experience.
 
+### 2024 January Update
+Because of the CoinGecko request limit, I have to change the code to adapt to the new limits and reduce the request number so the app doesn't crash.
+
+<img src="./public/crypto-tracker.jpg" />
+
+## [Crypto Tracker](https://goofy-carson-b7a87d.netlify.app/)
+
 ## Technologies Used
 
 Cryptocurrency Data:
